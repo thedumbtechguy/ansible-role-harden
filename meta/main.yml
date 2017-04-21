@@ -1,0 +1,24 @@
+---
+
+
+dependencies: []
+
+galaxy_info:
+  author: TheDumbTechGuy
+  description: Basic hardening for Linux servers.
+  company: "Half Tree Labs"
+  license: "license (BSD, MIT)"
+  min_ansible_version: 2.0
+  platforms:
+    - name: Ubuntu
+      versions:
+      - all
+    - name: Debian
+      versions:
+      - all
+  galaxy_tags:
+    - hardening
+    - security
+    - firewall
+    - ssh
+    - tcp_wrappers

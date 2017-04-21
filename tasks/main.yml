@@ -1,0 +1,16 @@
+---
+
+- include: ssh.yml
+  tags:
+    - harden
+    - ssh
+
+- include: firewall.yml
+  tags:
+    - harden
+    - firewall
+
+- include: tcp_wrapper.yml
+  tags:
+    - harden
+    - tcp_wrapper

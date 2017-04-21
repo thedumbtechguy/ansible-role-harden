@@ -1,0 +1,17 @@
+---
+
+harden_ssh_disable_password_login: true
+harden_ssh_disable_root_login: true
+harden_ssh_disable_ipv6: true
+harden_ssh_disable_tcp_forwarding: true
+
+harden_firewall_ssh_allowed_ips:
+  - 10.0.0.0/8
+  - 172.16.0.0/12
+  - 192.168.0.0/16
+
+
+harden_tcp_wrapper_ssh_allowed_ips:
+  - 10.0.0.1/255.0.0.0
+  - 172.16.0.0/255.240.0.0
+  - 192.168.0.0/255.255.0.0

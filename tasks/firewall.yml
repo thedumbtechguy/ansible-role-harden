@@ -1,0 +1,36 @@
+---
+
+- name: ensure ufw is installed
+  apt:
+    name: ufw
+    state: present 
+    update_cache: yes
+  become: true
+
+- name: reset firewall
+  ufw:
+    state: reset
+  become: true
+
+- name: enable ipv6 support in ufw
+  lineinfile: 
+    dest: /etc/default/ufw
+    insertafter: EOF
+    line: 'IPV6=yes'
+    regexp: '^IPV6=.*'
+    state: present
+  become: true
+
+- name: enable ssh from allowed networks
+  ufw:
+    port: 22
+    proto: tcp
+    rule: allow
+    src: '{{ item }}'
+  become: true
+  with_items: '{{ harden_firewall_ssh_allowed_ips }}'
+
+- name: enable firewall
+  ufw:
+    state: enabled
+  become: true

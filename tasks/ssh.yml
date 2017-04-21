@@ -1,0 +1,111 @@
+---
+
+- name: disable ssh over ipv6
+  lineinfile: 
+    dest: /etc/ssh/sshd_config
+    insertafter: EOL
+    line: 'AddressFamily inet'
+    regexp: '^AddressFamily .*'
+    state: present
+    backup: yes
+  become: true
+  when: harden_ssh_disable_ipv6
+  notify:
+    - reload ssh
+
+- name: enable ssh over ipv6
+  lineinfile: 
+    dest: /etc/ssh/sshd_config
+    insertafter: EOL
+    line: 'AddressFamily any'
+    regexp: '^AddressFamily .*'
+    state: present
+    backup: yes
+  become: true
+  when: not harden_ssh_disable_ipv6
+  notify:
+    - reload ssh
+
+
+- name: disable ssh password login
+  lineinfile: 
+    dest: /etc/ssh/sshd_config
+    insertafter: '# Change to no to disable tunnelled clear text passwords'
+    line: 'PasswordAuthentication no'
+    regexp: '^PasswordAuthentication .*'
+    state: present
+    backup: yes
+  become: true
+  when: harden_ssh_disable_password_login
+  notify:
+    - reload ssh
+
+- name: enable ssh password login
+  lineinfile: 
+    dest: /etc/ssh/sshd_config
+    insertafter: '# Change to no to disable tunnelled clear text passwords'
+    line: 'PasswordAuthentication yes'
+    regexp: '^PasswordAuthentication .*'
+    state: present
+    backup: yes
+  become: true
+  when: not harden_ssh_disable_password_login
+  notify:
+    - reload ssh
+
+
+- name: disable root ssh login
+  lineinfile: 
+    dest: /etc/ssh/sshd_config
+    insertafter: 'LoginGraceTime .*'
+    line: 'PermitRootLogin no'
+    regexp: '^PermitRootLogin .*'
+    state: present
+    backup: yes
+  become: true
+  when: harden_ssh_disable_root_login
+  notify:
+    - reload ssh
+
+- name: enable root ssh login
+  lineinfile: 
+    dest: /etc/ssh/sshd_config
+    insertafter: 'LoginGraceTime .*'
+    line: 'PermitRootLogin yes'
+    regexp: '^PermitRootLogin .*'
+    state: present
+    backup: yes
+  become: true
+  when: not harden_ssh_disable_root_login
+  notify:
+    - reload ssh
+
+
+- name: disable tcp forwarding
+  lineinfile: 
+    dest: /etc/ssh/sshd_config
+    insertafter: EOF
+    line: 'AllowTcpForwarding no'
+    regexp: '^AllowTcpForwarding .*'
+    state: present
+    backup: yes
+  become: true
+  when: harden_ssh_disable_tcp_forwarding
+  notify:
+    - reload ssh
+
+
+- name: enable tcp forwarding
+  lineinfile: 
+    dest: /etc/ssh/sshd_config
+    insertafter: EOF
+    line: 'AllowTcpForwarding yes'
+    regexp: '^AllowTcpForwarding .*'
+    state: present
+    backup: yes
+  become: true
+  when: not harden_ssh_disable_tcp_forwarding
+  notify:
+    - reload ssh
+
+ 

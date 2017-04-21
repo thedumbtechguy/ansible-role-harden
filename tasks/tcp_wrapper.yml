@@ -1,0 +1,31 @@
+---
+
+- name: allow all connections from localhost via tcp wrapper
+  lineinfile: 
+    dest: /etc/hosts.allow
+    insertafter: EOF
+    line: 'ALL: {{ item }}'
+    regexp: '^ALL: {{ item }}'
+    state: present
+  become: true
+  with_items:
+    - 127.0.0.1
+
+- name: allow ssh connections from private networks via tcp wrapper
+  lineinfile: 
+    dest: /etc/hosts.allow
+    insertafter: EOF
+    line: 'sshd: {{ item }}'
+    regexp: '^sshd: {{ item }}'
+    state: present
+  become: true
+  with_items: '{{ harden_tcp_wrapper_ssh_allowed_ips }}'
+
+- name: deny all incoming tcp traffic via tcp wrapper
+  lineinfile: 
+    dest: /etc/hosts.deny
+    insertafter: EOF
+    line: 'ALL: ALL'
+    regexp: '^ALL: ALL'
+    state: present
+  become: true
